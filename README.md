@@ -1,15 +1,15 @@
-# Kubernetes ReadOnly SA Admin Account Creator
+# Kubernetes ReadOnly SA Account Creator
 
 ## Introduction
 
-This repo contains a bash shell script that creates resources within the target cluster that will used to generate a `kubeconfig.yml` that can be shared with the Kloudle team.
+This repository contains a bash shell script that creates resources within the target cluster that will used to generate a `kubeconfig.yml` that can be shared with the Kloudle team.
 
 The script adds the following Kubernetes resources
 
-1. ClusterRole
-2. ClusterRoleBinding
-3. Service Account
-4. Service Account Secret Token
+1. A ReadOnly ClusterRole
+2. A ClusterRoleBinding for the ClusterRole
+3. A Service Account
+4. A Secret Token for the Service Account
 
 ## Pre-requisites
 
@@ -20,8 +20,10 @@ The script adds the following Kubernetes resources
 
 You can pass the shell script to curl directly using the raw GitHub URL
 
-```
-curl -sS https://raw.githubusercontent.com/Kloudle/kubernetes-readonly-admin-create/main/kubernetes-readonly-admin-creator.sh | sh
+```bash
+curl -sS https://raw.githubusercontent.com/Kloudle/kloudle-kubernetes-onboarding/master/kubernetes-readonly-admin-creator.sh | sh
 ```
 
-Save the `kubeconfig` displayed on screen to a file called `kubeconfig.yml` and share it with Kloudle Team or paste the output in the Kubernetes Onboarding page on the Kloudle App.
+Share the output with the Kloudle Team or as required, paste the output in the Kubernetes Onboarding page on the Kloudle App.
+
+You can also save the output displayed on screen to a file called `kubeconfig.yml` for local use.
