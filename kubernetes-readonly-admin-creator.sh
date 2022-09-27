@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# Created by Riyaz Walikar @Kloudle
+# Copyright Kloudle Inc. 2022
+# Usage post: https://kloudle.com/blog/how-to-onboard-kubernetes-to-kloudle
+
 echo "Kloudle kubernetes onboarding script"
 echo "Creates readonly resources and prints the kubeconfig.yml that needs to be shared with Kloudle"
 echo 
