@@ -85,9 +85,9 @@ EOF4
 echo 
 echo 
 export CLUSTER_NAME=$(kubectl config current-context)
-export CLUSTER_SERVER=$(kubectl cluster-info | grep "control plane" | awk '{print $NF}' | sed 's/\x1B\[[0-9;]\+[A-Za-z]//g')
+export CLUSTER_SERVER=$(kubectl cluster-info | grep --color=never "control plane" | awk '{print $NF}')
 export CLUSTER_SA_SECRET_NAME=$(kubectl -n default get sa cluster-admin-readonly -o jsonpath='{ $.secrets[0].name }')
-export CLUSTER_SA_TOKEN_NAME=$(kubectl -n default get secret | grep $CLUSTER_SA_SECRET_NAME | awk '{print $1}')
+export CLUSTER_SA_TOKEN_NAME=$(kubectl -n default get secret | grep --color=never $CLUSTER_SA_SECRET_NAME | awk '{print $1}')
 export CLUSTER_SA_TOKEN=$(kubectl -n default get secret $CLUSTER_SA_TOKEN_NAME -o "jsonpath={.data.token}" | base64 -d)
 export CLUSTER_SA_CRT=$(kubectl -n default get secret $CLUSTER_SA_TOKEN_NAME -o "jsonpath={.data['ca\.crt']}")
 cat <<EOF5 > /dev/stdout
