@@ -29,7 +29,7 @@ Depending on whether your cluster is internal or external (private or reachable 
 
 You can pass the shell script to curl directly using the raw GitHub URL. The script creates ReadOnly resources in the target cluster.
 
-```
+```bash
 curl -sS https://raw.githubusercontent.com/Kloudle/kubernetes-readonly-admin-create/main/kubernetes-readonly-admin-creator.sh | sh
 ```
 
@@ -37,9 +37,12 @@ Save the `kubeconfig` displayed on screen to a file called `kubeconfig.yml` and 
 
 ### If your cluster is internal / not reachable over the Internet
 
-This is meant to be run on a jumpbox or a machine that can reach the cluster. You can pass the shell script to curl directly using the raw GitHub URL. The script installs Tinyproxy and sets up a HTTP/HTTPS proxy in additional to creating ReadOnly resources in the target cluster.
+This is meant to be run on a jumpbox or a machine that can reach the cluster. The script 
 
-```
+- installs Tinyproxy and sets up a HTTP/HTTPS proxy
+- creates ReadOnly resources in the target cluster
+
+```bash
 curl -sS https://raw.githubusercontent.com/Kloudle/kloudle-kubernetes-onboarding/master/kubernetes-jumpbox-proxy-readonly-admin-setup.sh | sh
 ```
 
