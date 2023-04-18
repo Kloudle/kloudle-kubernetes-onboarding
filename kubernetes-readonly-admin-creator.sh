@@ -4,10 +4,15 @@
 # Copyright Kloudle Inc. 2022
 # Usage post: https://kloudle.com/blog/how-to-onboard-kubernetes-to-kloudle
 
+GREEN='\033[0;32m'
+COLOR_OFF='\033[0m'
+
 echo "Kloudle kubernetes onboarding script"
 echo "Creates readonly resources and prints the kubeconfig.yml that needs to be shared with Kloudle"
-echo 
-
+echo
+read -p "Press enter to continue ...."
+# Setup of Kubernetes readonly resources from here
+echo -e "${GREEN}Create a readonly clusterrole${COLOR_OFF}"
 # Create a readonly clusterrole
 cat <<EOF1 | kubectl apply -f -
 apiVersion: rbac.authorization.k8s.io/v1
@@ -49,6 +54,7 @@ rules:
   - watch
 EOF1
 
+echo -e "${GREEN}Create a clusterrolebinding to bind the readonly clusterrole to service account${COLOR_OFF}"
 # Create a clusterrolebinding to bind the readonly clusterrole to service account
 cat <<EOF2 | kubectl apply -f -
 apiVersion: rbac.authorization.k8s.io/v1
@@ -65,6 +71,7 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 EOF2
 
+echo -e "${GREEN}Add a service account to the cluster-admin-readonly clusterrole${COLOR_OFF}"
 # Add a service account to the cluster-admin-readonly clusterrole
 cat <<EOF3 | kubectl apply -f -
 apiVersion: v1
@@ -74,6 +81,8 @@ metadata:
 secrets:
 - name: cluster-admin-readonly-secret-token
 EOF3
+
+echo -e "${GREEN}Create a secret, new after 1.24${COLOR_OFF}"
 
 # Create a secret, new after 1.24
 cat <<EOF4 | kubectl apply -f -
@@ -88,13 +97,16 @@ EOF4
 
 # Generate config manifest for the cluster
 echo 
-echo 
+echo
+echo -e "COPY CONTENTS BELOW THIS LINE -------------------------------------------"
+
 export CLUSTER_NAME=$(kubectl config current-context)
 export CLUSTER_SERVER=$(kubectl cluster-info | grep --color=never "control plane" | awk '{print $NF}')
 export CLUSTER_SA_SECRET_NAME=$(kubectl -n default get sa cluster-admin-readonly -o jsonpath='{ $.secrets[0].name }')
 export CLUSTER_SA_TOKEN_NAME=$(kubectl -n default get secret | grep --color=never $CLUSTER_SA_SECRET_NAME | awk '{print $1}')
 export CLUSTER_SA_TOKEN=$(kubectl -n default get secret $CLUSTER_SA_TOKEN_NAME -o "jsonpath={.data.token}" | base64 -d)
 export CLUSTER_SA_CRT=$(kubectl -n default get secret $CLUSTER_SA_TOKEN_NAME -o "jsonpath={.data['ca\.crt']}")
+
 cat <<EOF5 > /dev/stdout
 apiVersion: v1
 kind: Config
@@ -108,7 +120,7 @@ clusters:
     server: $CLUSTER_SERVER
   name: $CLUSTER_NAME
 contexts:
-- context:
+- context:Run
     cluster: $CLUSTER_NAME
     user: default
   name: $CLUSTER_NAME
