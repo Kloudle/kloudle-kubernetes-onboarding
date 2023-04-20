@@ -120,7 +120,7 @@ clusters:
     server: $CLUSTER_SERVER
   name: $CLUSTER_NAME
 contexts:
-- context:Run
+- context:
     cluster: $CLUSTER_NAME
     user: default
   name: $CLUSTER_NAME
