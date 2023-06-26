@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Created by Riyaz Walikar @Kloudle
-# Copyright Kloudle Inc. 2022
+# Copyright Kloudle Inc. 2023
 # Usage post: https://kloudle.com/blog/how-to-onboard-kubernetes-to-kloudle
 
 GREEN='\033[0;32m'
