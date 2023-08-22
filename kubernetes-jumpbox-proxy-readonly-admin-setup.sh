@@ -2,12 +2,12 @@
 
 # Created by Riyaz Walikar @Kloudle
 # Copyright Kloudle Inc. 2023
-# Usage post: TBD
+# Usage blogpost: TBD
 
 GREEN='\033[0;32m'
 COLOR_OFF='\033[0m'
 
-echo "Kloudle onboarding script for internal Kuberentes clusters"
+echo "Kloudle onboarding script for internal Kubernetes clusters"
 echo "This script performs the following actions"
 echo "- Sets up Tinyproxy to act as a HTTP/HTTPS proxy to reach the cluster"
 echo "- Creates readonly resources on the cluster and prints the kubeconfig.yml that needs to be shared with Kloudle"
@@ -42,10 +42,10 @@ EOF10'
 
 sudo service tinyproxy restart
 
-export extip=$(curl -sS ipv4.icanhazip.com)
-echo -e "${GREEN}Public IP address of this proxy is: $extip:8443"
+export extip=$(curl -sS https://ipv4.icanhazip.com)
+echo -e "${GREEN}Public IP address of the current host is: $extip:8443"
 
-echo -e "Ensure port 8443 is open on the cloud provider firewall to 34.173.52.204${COLOR_OFF}"
+echo -e "Ensure port 8443 is open for this host on the cloud provider firewall to 34.173.52.204${COLOR_OFF}"
 
 echo "Done setting up Tinyproxy..."
 # export HTTPS_PROXY=THIS-MACHINES-PUBLIC-IP:8443 on the client machine."
@@ -58,13 +58,13 @@ read -p "Press enter to continue ...."
 echo 
 echo
 # Setup of Kubernetes readonly resources from here
-echo -e "${GREEN}Create a readonly clusterrole${COLOR_OFF}"
+echo -e "${GREEN}Create a readonly clusterrole called 'kloudle-cluster-reader'${COLOR_OFF}"
 # Create a readonly clusterrole
 cat <<EOF1 | kubectl apply -f -
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
- name: cluster-reader
+ name: kloudle-cluster-reader
 rules:
 - apiGroups:
   - ""
@@ -100,44 +100,44 @@ rules:
   - watch
 EOF1
 
-echo -e "${GREEN}Create a clusterrolebinding to bind the readonly clusterrole to service account${COLOR_OFF}"
+echo -e "${GREEN}Create a clusterrolebinding called 'kloudle-global-cluster-reader' to bind the readonly clusterrole to service account${COLOR_OFF}"
 # Create a clusterrolebinding to bind the readonly clusterrole to service account
 cat <<EOF2 | kubectl apply -f -
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
- name: global-cluster-reader
+ name: kloudle-global-cluster-reader
 subjects:
 - kind: ServiceAccount
-  name: cluster-admin-readonly
+  name: kloudle-cluster-admin-readonly
   namespace: default
 roleRef:
   kind: ClusterRole
-  name: cluster-reader
+  name: kloudle-cluster-reader
   apiGroup: rbac.authorization.k8s.io
 EOF2
 
-echo -e "${GREEN}Add a service account to the cluster-admin-readonly clusterrole${COLOR_OFF}"
+echo -e "${GREEN}Add a service account called 'kloudle-cluster-admin-readonly' to the cluster-admin-readonly clusterrole${COLOR_OFF}"
 # Add a service account to the cluster-admin-readonly clusterrole
 cat <<EOF3 | kubectl apply -f -
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: cluster-admin-readonly
+  name: kloudle-cluster-admin-readonly
 secrets:
-- name: cluster-admin-readonly-secret-token
+- name: kloudle-cluster-admin-readonly-secret-token
 EOF3
 
-echo -e "${GREEN}Create a secret, new after 1.24${COLOR_OFF}"
+echo -e "${GREEN}Create a secret called 'kloudle-cluster-admin-readonly-secret-token', new in Kubernetes v1.24${COLOR_OFF}"
 
 # Create a secret, new after 1.24
 cat <<EOF4 | kubectl apply -f -
 apiVersion: v1
 kind: Secret
 metadata:
-  name: cluster-admin-readonly-secret-token
+  name: kloudle-cluster-admin-readonly-secret-token
   annotations:
-    kubernetes.io/service-account.name: cluster-admin-readonly
+    kubernetes.io/service-account.name: kloudle-cluster-admin-readonly
 type: kubernetes.io/service-account-token
 EOF4
 
@@ -157,7 +157,7 @@ cat <<EOF5 > /dev/stdout
 apiVersion: v1
 kind: Config
 users:
-- name: default
+- name: kloudle-readonly-user
   user:
     token: $CLUSTER_SA_TOKEN
 clusters:
@@ -168,7 +168,7 @@ clusters:
 contexts:
 - context:
     cluster: $CLUSTER_NAME
-    user: default
+    user: kloudle-readonly-user
   name: $CLUSTER_NAME
 current-context: $CLUSTER_NAME
 EOF5
