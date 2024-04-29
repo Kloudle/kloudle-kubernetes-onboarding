@@ -137,3 +137,5 @@ contexts:
   name: $CLUSTER_NAME
 current-context: $CLUSTER_NAME
 EOF5
+
+echo -e "All done! $foldername/kloudle-cluster-admin-readonly-$suffix.yml generated. Upload this file to Kloudle."
