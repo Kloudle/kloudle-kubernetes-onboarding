@@ -6,10 +6,10 @@ This repo contains shell scripts that create resources within the target cluster
 
 The script adds the following Kubernetes resources
 
-1. ClusterRole
-2. ClusterRoleBinding
-3. Service Account
-4. Service Account Secret Token
+1. ClusterRole - `kloudle-cluster-reader`
+2. ClusterRoleBinding - `kloudle-global-cluster-reader`
+3. Service Account - `kloudle-cluster-admin-readonly`
+4. Service Account Secret Token - `kloudle-cluster-admin-readonly-secret-token`
 
 Repo contains two primary scripts
 
@@ -27,7 +27,7 @@ Depending on whether your cluster is internal or external (private or reachable 
 
 ### If your cluster is externally accessible / has a public IP address
 
-You can pass the shell script to curl directly using the raw GitHub URL. The script creates ReadOnly resources in the target cluster.
+You can pass the shell script to cURL directly using the raw GitHub URL. The script creates ReadOnly resources in the target cluster.
 
 ```bash
 curl -sS https://raw.githubusercontent.com/Kloudle/kubernetes-readonly-admin-create/master/kubernetes-readonly-admin-creator.sh | bash
@@ -37,9 +37,9 @@ Save the `kubeconfig` displayed on screen to a file called `kubeconfig.yml` and 
 
 ### If your cluster is internal / not reachable over the Internet
 
-This is meant to be run on a jumpbox or a machine that can reach the cluster. The script 
+This is meant to be run on a jumpbox or a machine that can reach the cluster. The script does the following
 
-- installs Tinyproxy and sets up a HTTP/HTTPS proxy
+- installs `Tinyproxy`` and sets up a HTTP/HTTPS proxy
 - creates ReadOnly resources in the target cluster
 
 ```bash
