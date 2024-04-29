@@ -1,13 +1,9 @@
 #!/bin/bash
 
 # Created by Riyaz Walikar @Kloudle
-<<<<<<< HEAD
 # Copyright Kloudle Inc. 2024
-# Usage post: https://kloudle.com/blog/how-to-onboard-kubernetes-to-kloudle
-=======
-# Copyright Kloudle Inc. 2023
 # Usage blogpost: https://kloudle.com/blog/how-to-onboard-kubernetes-to-kloudle
->>>>>>> d9c85481ba7aa1fb397ed698c57131eec9450caa
+
 
 GREEN='\033[0;32m'
 COLOR_OFF='\033[0m'
@@ -126,7 +122,7 @@ cat <<EOF5 > $foldername/kloudle-cluster-admin-readonly-$suffix.yml
 apiVersion: v1
 kind: Config
 users:
-- name: kloudle-readonly-user
+- name: kloudle-cluster-admin-readonly-user
   user:
     token: $CLUSTER_SA_TOKEN
 clusters:
@@ -137,7 +133,7 @@ clusters:
 contexts:
 - context:
     cluster: $CLUSTER_NAME
-    user: kloudle-readonly-user
+    user: kloudle-cluster-admin-readonly-user
   name: $CLUSTER_NAME
 current-context: $CLUSTER_NAME
 EOF5

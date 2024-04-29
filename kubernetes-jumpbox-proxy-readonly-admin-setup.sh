@@ -44,7 +44,7 @@ sudo service tinyproxy restart
 export extip=$(curl -sS https://ipv4.icanhazip.com)
 echo -e "${GREEN}Public IP address of the current host is: $extip:8443"
 
-echo -e "Ensure port 8443 is open for this host on the cloud provider firewall to 34.173.52.204${COLOR_OFF}"
+echo -e "Ensure port 8443 is open for this host on the cloud provider firewall to 34.173.52.204 ${COLOR_OFF}"
 
 echo "Done setting up Tinyproxy..."
 # export HTTPS_PROXY=THIS-MACHINES-PUBLIC-IP:8443 on the client machine."
@@ -167,7 +167,7 @@ cat <<EOF5 > $foldername/kloudle-cluster-admin-readonly-$suffix.yml
 apiVersion: v1
 kind: Config
 users:
-- name: kloudle-readonly-user
+- name: kloudle-cluster-admin-readonly-user
   user:
     token: $CLUSTER_SA_TOKEN
 clusters:
@@ -178,7 +178,7 @@ clusters:
 contexts:
 - context:
     cluster: $CLUSTER_NAME
-    user: kloudle-readonly-user
+    user: kloudle-cluster-admin-readonly-user
   name: $CLUSTER_NAME
 current-context: $CLUSTER_NAME
 EOF5
