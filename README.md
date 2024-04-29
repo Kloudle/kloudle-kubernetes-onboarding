@@ -33,17 +33,23 @@ You can pass the shell script to cURL directly using the raw GitHub URL. The scr
 curl -sS https://raw.githubusercontent.com/Kloudle/kubernetes-readonly-admin-create/master/kubernetes-readonly-admin-creator.sh | bash
 ```
 
-Save the `kubeconfig` displayed on screen to a file called `kubeconfig.yml` and share it with Kloudle Team or paste the output in the Kubernetes Onboarding page on the Kloudle App.
+A file called `kloudle-cluster-admin-readonly-TIMESTAMP.yml` will be created in a folder called `k8s-kloudle-onboarding-kubeconfigs`. For example - `kloudle-cluster-admin-readonly-29-04-2024-18-49-38.yml`
+
+Upload this file to the Kloudle App via the Kubernetes Onboarding page.
 
 ### If your cluster is internal / not reachable over the Internet
 
-This is meant to be run on a jumpbox or a machine that can reach the cluster. The script does the following
+This script is meant to be run on a jumpbox/bastion host (basically a machine that can reach the cluster). The script does the following
 
-- installs `Tinyproxy`` and sets up a HTTP/HTTPS proxy
+- installs `Tinyproxy` and sets up a HTTP/HTTPS proxy on the jumpbox
 - creates ReadOnly resources in the target cluster
+
+**Note:** `The jumpbox needs to be alive even after the script is created for Kloudle to reach the internal cluster and perform its scans.`
 
 ```bash
 curl -sS https://raw.githubusercontent.com/Kloudle/kloudle-kubernetes-onboarding/master/kubernetes-jumpbox-proxy-readonly-admin-setup.sh | bash
 ```
 
-Save the `kubeconfig` displayed on screen to a file called `kubeconfig.yml` and share it with Kloudle Team or paste the output in the Kubernetes Onboarding page on the Kloudle App.
+A file called `kloudle-cluster-admin-readonly-TIMESTAMP.yml` will be created in a folder called `k8s-kloudle-onboarding-kubeconfigs`. For example - `kloudle-cluster-admin-readonly-29-04-2024-18-49-38.yml`
+
+Upload this file to the Kloudle App via the Kubernetes Onboarding page.
