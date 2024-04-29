@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # Created by Riyaz Walikar @Kloudle
-# Copyright Kloudle Inc. 2023
-# Usage post: TBD
+# Copyright Kloudle Inc. 2024
 
 GREEN='\033[0;32m'
 COLOR_OFF='\033[0m'
@@ -143,8 +142,17 @@ EOF4
 
 # Generate config manifest for the cluster
 echo 
-echo
-echo -e "COPY CONTENTS BELOW THIS LINE -------------------------------------------"
+
+export foldername="k8s-kloudle-onboarding-kubeconfigs"
+if [ ! -d "$foldername" ]; then
+  mkdir $foldername
+fi
+export suffix="$(date +%d-%m-%Y-%H-%M-%S)"
+
+echo -e "${GREEN}Generating kubeconfig in folder $foldername ${COLOR_OFF}"
+
+export T=$TERM
+export TERM=dumb
 
 export CLUSTER_NAME=$(kubectl config current-context)
 export CLUSTER_SERVER=$(kubectl cluster-info | grep --color=never "control plane" | awk '{print $NF}')
@@ -153,7 +161,9 @@ export CLUSTER_SA_TOKEN_NAME=$(kubectl -n default get secret | grep --color=neve
 export CLUSTER_SA_TOKEN=$(kubectl -n default get secret $CLUSTER_SA_TOKEN_NAME -o "jsonpath={.data.token}" | base64 -d)
 export CLUSTER_SA_CRT=$(kubectl -n default get secret $CLUSTER_SA_TOKEN_NAME -o "jsonpath={.data['ca\.crt']}")
 
-cat <<EOF5 > /dev/stdout
+export TERM=$T
+
+cat <<EOF5 > $foldername/kloudle-cluster-admin-readonly-$suffix.yml
 apiVersion: v1
 kind: Config
 users:
