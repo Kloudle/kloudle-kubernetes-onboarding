@@ -57,7 +57,7 @@ read -p "Press enter to continue ...."
 echo 
 echo
 # Setup of Kubernetes readonly resources from here
-echo -e "${GREEN}Create a readonly clusterrole called 'kloudle-cluster-reader'${COLOR_OFF}"
+echo -e "${GREEN}Creating a readonly clusterrole called 'kloudle-cluster-reader'${COLOR_OFF}"
 # Create a readonly clusterrole
 cat <<EOF1 | kubectl apply -f -
 apiVersion: rbac.authorization.k8s.io/v1
@@ -99,7 +99,7 @@ rules:
   - watch
 EOF1
 
-echo -e "${GREEN}Create a clusterrolebinding called 'kloudle-global-cluster-reader' to bind the readonly clusterrole to service account${COLOR_OFF}"
+echo -e "${GREEN}Creating a clusterrolebinding called 'kloudle-global-cluster-reader' to bind the readonly clusterrole to service account${COLOR_OFF}"
 # Create a clusterrolebinding to bind the readonly clusterrole to service account
 cat <<EOF2 | kubectl apply -f -
 apiVersion: rbac.authorization.k8s.io/v1
@@ -116,7 +116,7 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 EOF2
 
-echo -e "${GREEN}Add a service account called 'kloudle-cluster-admin-readonly' to the cluster-admin-readonly clusterrole${COLOR_OFF}"
+echo -e "${GREEN}Adding a service account called 'kloudle-cluster-admin-readonly' to the cluster-admin-readonly clusterrole${COLOR_OFF}"
 # Add a service account to the cluster-admin-readonly clusterrole
 cat <<EOF3 | kubectl apply -f -
 apiVersion: v1
@@ -127,7 +127,7 @@ secrets:
 - name: kloudle-cluster-admin-readonly-secret-token
 EOF3
 
-echo -e "${GREEN}Create a secret called 'kloudle-cluster-admin-readonly-secret-token', new in Kubernetes v1.24${COLOR_OFF}"
+echo -e "${GREEN}Creating a secret called 'kloudle-cluster-admin-readonly-secret-token', new in Kubernetes v1.24${COLOR_OFF}"
 
 # Create a secret, new after 1.24
 cat <<EOF4 | kubectl apply -f -
