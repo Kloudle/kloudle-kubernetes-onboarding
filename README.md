@@ -30,7 +30,7 @@ Depending on whether your cluster is internal or external (private or reachable 
 You can pass the shell script to cURL directly using the raw GitHub URL. The script creates ReadOnly resources in the target cluster.
 
 ```bash
-curl -sS https://raw.githubusercontent.com/Kloudle/kubernetes-readonly-admin-create/master/kubernetes-readonly-admin-creator.sh | bash
+curl -sS https://raw.githubusercontent.com/Kloudle/kloudle-kubernetes-onboarding/refs/heads/master/kubernetes-readonly-admin-creator.sh | bash
 ```
 
 A file called `kloudle-cluster-admin-readonly-TIMESTAMP.yml` will be created in a folder called `k8s-kloudle-onboarding-kubeconfigs`. For example - `kloudle-cluster-admin-readonly-29-04-2024-18-49-38.yml`
@@ -47,7 +47,7 @@ This script is meant to be run on a jumpbox/bastion host (basically a machine th
 **Note:** `The jumpbox needs to be alive even after the script is created for Kloudle to reach the internal cluster and perform its scans.`
 
 ```bash
-curl -sS https://raw.githubusercontent.com/Kloudle/kloudle-kubernetes-onboarding/master/kubernetes-jumpbox-proxy-readonly-admin-setup.sh | bash
+curl -sS https://raw.githubusercontent.com/Kloudle/kloudle-kubernetes-onboarding/refs/heads/master/kubernetes-jumpbox-proxy-readonly-admin-setup.sh | bash
 ```
 
 A file called `kloudle-cluster-admin-readonly-TIMESTAMP.yml` will be created in a folder called `k8s-kloudle-onboarding-kubeconfigs`. For example - `kloudle-cluster-admin-readonly-29-04-2024-18-49-38.yml`
